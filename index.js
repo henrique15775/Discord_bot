@@ -50,6 +50,6 @@ bot.on('message', async (message) =>{
       }}else if(message.content == '!skip'){
         bot_recursivo(connection,message.content);
       }else{
-        console.log("MINHA POMBAAAAA")
+        console.log("...");
       }
   });
