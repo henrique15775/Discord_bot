@@ -5,7 +5,7 @@ const ytdl = require('ytdl-core');
 verify = false
 fila = [];
 counter = 0;
-bot.login("ODYxMjYzNzE0NDI5ODI5MTMy.YOHQVw.4aZ4DvtoUQ-hF2YUZKjls-o4gQY");
+bot.login("");
 bot.once('ready',() => {
   console.log(`Bot online: ${bot.user.tag}!!`)
 });
