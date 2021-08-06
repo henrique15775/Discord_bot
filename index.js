@@ -10,22 +10,22 @@ bot.once('ready',() => {
   console.log(`Bot online: ${bot.user.tag}!!`)
 });
 
-const bot_recursivo = (connection) => {
+const bot_recursivo = (connection,msg) => {
   if(fila.length > 0){
-  const watcher =  connection.play(
-    ytdl(fila[0], { filter: 'audioonly' }))
-watcher.on('speaking', (response) => {
-      if (response == 0){
+    const watcher =  connection.play(
+      ytdl(fila[0], { filter: 'audioonly' }));
+    watcher.on('speaking', (response) => {
+      if (response == 0 || msg == "!skip"){
         fila.shift();
         console.log(fila);
         verify = false;
         bot_recursivo(connection);
       }
     });
-verify = true;
-    console.log("bora ver se vai dar...");
+    verify = true;
+    console.log(`Tocando ${fila[0]} `);
   }else{
-    console.log('lista vazia!!!');
+    console.log('Fila vazia!!!');
   }
       };
 
@@ -33,32 +33,23 @@ verify = true;
 bot.on('message', async (message) =>{
 
   if (message.content.slice(0,5) === '!play'){
-    //  fila.push(message.content.slice(6));
+    
       const voiceChannel = message.member.voice.channel;
       const connection = await voiceChannel.join();
-
+  
       console.log(message.content);
       
       if(verify === false){
+        message.channel.send(`Adicionado pra fila!`);
         fila.push(message.content.slice(6));
-      //fila.push(message.content.slice(6));
-      bot_recursivo(connection,fila);
-      /*const watcher = connection.play(
-          ytdl(fila[0], { filter: 'audioonly' }));
-      watcher.on('speaking', (response) => {
-            if (response == 0){
-              fila.shift();
-              console.log(fila);
-              verify = false;
-              bot_recursivo(voiceChannel,connection,watcher);
-            }
-          });
-      verify = true;
-      */
+        bot_recursivo(connection,message.content);
+      
         }else{
-          fila.push(message.content.slice(6));
+          message.channel.send(`Adicionado pra fila!`);
+          fila.push(message.content.slice(6)); 
+      }}else if(message.content == '!skip'){
+        bot_recursivo(connection,message.content);
+      }else{
+        console.log("MINHA POMBAAAAA")
       }
-    console.log('uiiiii');
-  }
-
-    });
+  });
